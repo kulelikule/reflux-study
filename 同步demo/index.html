@@ -1,0 +1,34 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+        <script src="./reflux.min.js"></script>
+        <script>
+            let myActions = Reflux.createActions(['syncAddItem'])
+
+            let state = []
+
+            let myStore = Reflux.createStore({
+                listenables: [myActions],
+                onSyncAddItem(name) {
+                    state.push(name)
+                    this.trigger(state)
+                }
+            })
+
+            myStore.listen(() => {
+                console.log(state)
+            })
+
+            function add() {
+                myActions.syncAddItem(`new Item: ${Math.random()}`)
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="add()">Add</button>
+    </body>
+    </html>
